@@ -1,0 +1,51 @@
+﻿<Window x:Class="USNPersonnelManager.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Title="USN SQUAD MANAGER" Height="750" Width="480"
+            Background="#1E1E1E" FontFamily="Poppins" FontWeight="Medium"
+            Foreground="White" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Icon="/USN.png">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel Background="#2C2C2C" Height="50" VerticalAlignment="Top">
+            <Image Source="/USN.png" Width="48" Height="48" Margin="10,0,0,0"/>
+            <TextBlock Text="USN SQUAD MANAGER"
+                           FontSize="20" VerticalAlignment="Center" Margin="5,0,0,0"
+                           Foreground="White" FontWeight="SemiBold"/>
+        </DockPanel>
+
+
+        <!-- Bottom Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,-580,0,0">
+            <Button Content="LOAD FROM FILE"
+                    Width="125" Height="35" Margin="10,0"
+                    Background="#4CAF50" Foreground="White"
+                    BorderThickness="0" Click="LoadFromFileButton_Click"
+                    Cursor="Hand" FontWeight="SemiBold"/>
+
+            <Button Content="UPDATE INFO"
+                    Width="125" Height="35" Margin="10,0"
+                    Background="#2196F3" Foreground="White"
+                    BorderThickness="0" Click="OpenSubWindow_Click"
+                    Cursor="Hand" FontWeight="SemiBold"/>
+
+            <Button Content="ADD SAILOR"
+                    Width="125" Height="35" Margin="10,0"
+                    Background="#DBAD42" Foreground="White"
+                    BorderThickness="0" Click="AddSailorButton_Click"
+                    Cursor="Hand" FontWeight="SemiBold"/>
+        </StackPanel>
+
+        <!-- Personnel List -->
+        <ScrollViewer Grid.Row="2" Margin="0,55,0,0" VerticalScrollBarVisibility="Auto" x:Name="PersonnelScroll">
+            <StackPanel>
+                <StackPanel x:Name="PersonnelList"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

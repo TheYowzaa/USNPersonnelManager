@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <RootNamespace>USN_PersonnelManager</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <Configurations>Debug;Release;Test</Configurations>
+    <Platforms>AnyCPU;x64</Platforms>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <StartupObject>USN_PersonnelManager.App</StartupObject>
+    <ApplicationIcon>Navy.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="USN.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Navy.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="USN.png" />
+  </ItemGroup>
+
+</Project>
