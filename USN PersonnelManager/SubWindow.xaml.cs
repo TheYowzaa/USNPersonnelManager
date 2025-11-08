@@ -99,5 +99,43 @@ namespace USNPersonnelManager
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void TerminateButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedPersonnel))
+            {
+                MessageBox.Show("Please select a personnel to terminate.", "Validation Error",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Confirmation dialog
+            var result = MessageBox.Show($"Are you sure you want to terminate {selectedPersonnel}?",
+                                         "Confirm Termination",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
+
+            if (result != MessageBoxResult.Yes)
+                return; // User canceled
+
+            // Load personnel list
+            var personnelList = LoadPersonnelData();
+
+            // Remove the selected personnel
+            var removed = personnelList.RemoveAll(p => p.Name == selectedPersonnel);
+            if (removed > 0)
+            {
+                SavePersonnelData(personnelList);
+                MessageBox.Show($"{selectedPersonnel} has been terminated.", "Termination Complete",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close(); // Close subwindow
+            }
+            else
+            {
+                MessageBox.Show("Personnel not found in the roster.", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

@@ -54,6 +54,12 @@
                     <ComboBoxItem Content="LOA-2"/>
                 </ComboBox>
 
+                <!-- LOA End Date -->
+                <TextBlock Text="LOA End Date:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <DatePicker x:Name="LOAEndDatePicker" 
+                            Background="#2B2B2B" Foreground="Black"
+                            BorderBrush="#3A3A3A" FontSize="14" Margin="0,0,0,10"/>
+
                 <!-- Rank -->
                 <TextBlock Text="Rank:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
                 <ComboBox x:Name="RankDropdown"
@@ -65,31 +71,50 @@
                     <ComboBoxItem Content="E-6"/>
                     <ComboBoxItem Content="E-7"/>
                     <ComboBoxItem Content="E-8"/>
+                    <ComboBoxItem Content="O-1"/>
+                    <ComboBoxItem Content="O-3"/>
+                    <ComboBoxItem Content="O-4"/>
+                    <ComboBoxItem Content="O-5"/>
+                    <ComboBoxItem Content="O-6"/>
+                    <ComboBoxItem Content="O-7"/>
+                    <ComboBoxItem Content="O-8"/>
+                    <ComboBoxItem Content="O-9"/>
+                    <ComboBoxItem Content="O-10"/>
                 </ComboBox>
 
                 <!-- Server Join Date -->
-                <TextBlock Text="Server Join Date YYYY/MM/DD:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <TextBlock Text="Server Join Date" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
                 <DatePicker x:Name="JoinDatePicker"
                             Background="#2B2B2B" Foreground="Black"
                             BorderBrush="#3A3A3A" FontSize="14" Margin="0,0,0,10"/>
 
                 <!-- Date of Last Promotion -->
-                <TextBlock Text="Date of Last Promotion YYYY/MM/DD:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <TextBlock Text="Date of Last Promotion" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
                 <DatePicker x:Name="LastPromotionDatePicker"
                             Background="#2B2B2B" Foreground="Black"
                             BorderBrush="#3A3A3A" FontSize="14" Margin="0,0,0,10"/>
 
                 <!-- Last Voyage -->
-                <TextBlock Text="Last Voyage YYYY/MM/DD:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <TextBlock Text="Last Voyage" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
                 <DatePicker x:Name="LastVoyageDatePicker"
                             Background="#2B2B2B" Foreground="Black"
                             BorderBrush="#3A3A3A" FontSize="14" Margin="0,0,0,10"/>
 
                 <!-- Last Voyage Hosted -->
-                <TextBlock Text="Last Voyage Hosted YYYY/MM/DD:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <TextBlock Text="Last Voyage Hosted" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
                 <DatePicker x:Name="LastVoyageHostedDatePicker"
                             Background="#2B2B2B" Foreground="Black"
                             BorderBrush="#3A3A3A" FontSize="14" Margin="0,0,0,10"/>
+
+                <!-- Guild Membership -->
+                <TextBlock Text="Guild Member:" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <ComboBox x:Name="GuildComboBox" 
+                          Background="#2B2B2B" Foreground="Black"
+                          BorderBrush="#3A3A3A" Padding="5" FontSize="14" Margin="0,0,0,10">
+                    <ComboBoxItem Content="Yes"/>
+                    <ComboBoxItem Content="No"/>
+                </ComboBox>
+
             </StackPanel>
         </ScrollViewer>
 
@@ -99,6 +124,11 @@
                     Width="100" Height="35" Margin="10,0"
                     Background="#4CAF50" Foreground="White"
                     BorderThickness="0" Click="SaveButton_Click"
+                    Cursor="Hand" FontWeight="SemiBold"/>
+            <Button Content="TERMINATE"
+                    Width="100" Height="35" Margin="10,0"
+                    Background="#8B0000" Foreground="White"
+                    BorderThickness="0" Click="TerminateButton_Click"
                     Cursor="Hand" FontWeight="SemiBold"/>
             <Button Content="Cancel"
                     Width="100" Height="35" Margin="10,0"

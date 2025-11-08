@@ -29,6 +29,15 @@
                 <ComboBoxItem Content="E-6"/>
                 <ComboBoxItem Content="E-7"/>
                 <ComboBoxItem Content="E-8"/>
+                <ComboBoxItem Content="O-1"/>
+                <ComboBoxItem Content="O-3"/>
+                <ComboBoxItem Content="O-4"/>
+                <ComboBoxItem Content="O-5"/>
+                <ComboBoxItem Content="O-6"/>
+                <ComboBoxItem Content="O-7"/>
+                <ComboBoxItem Content="O-8"/>
+                <ComboBoxItem Content="O-9"/>
+                <ComboBoxItem Content="O-10"/>
             </ComboBox>
         </StackPanel>
 

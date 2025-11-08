@@ -86,10 +86,12 @@ namespace USNPersonnelManager
                     };
                     var stack = new StackPanel { Margin = new Thickness(15, 5, 0, 5) };
                     stack.Children.Add(new TextBlock { Text = $"LOA Status: {person.LOAStatus}", Foreground = Brushes.White });
+                    stack.Children.Add(new TextBlock { Text = $"LOA Ends: {(person.LOAEndDate.HasValue ? $"{person.LOAEndDate:dd-MM-yyyy} ({(person.LOAEndDate.Value - DateTime.Now).Days} days left)" : "N/A")}", Foreground = Brushes.White });
                     stack.Children.Add(new TextBlock { Text = $"Joined Server: {FormatDate(person.ServerJoinDate)}", Foreground = Brushes.White });
                     stack.Children.Add(new TextBlock { Text = $"Last Promotion: {FormatDate(person.LastPromotionDate)}", Foreground = Brushes.White });
                     stack.Children.Add(new TextBlock { Text = $"Last Voyage: {FormatDate(person.LastVoyageDate)}", Foreground = Brushes.White });
                     stack.Children.Add(new TextBlock { Text = $"Last Voyage Hosted: {FormatDate(person.LastVoyageHostedDate)}", Foreground = Brushes.White });
+                    stack.Children.Add(new TextBlock { Text = $"Guild Member: {(!string.IsNullOrEmpty(person.GuildMember) ? person.GuildMember : "No")}", Foreground = Brushes.White });
 
                     expander.Content = stack;
                     PersonnelList.Children.Add(expander);
@@ -105,6 +107,25 @@ namespace USNPersonnelManager
         {
             switch (rank)
             {
+                case "O-1":
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#E2709A"));
+                case "O-3":
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C3242C"));
+                case "O-4":
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DF2A02"));
+                case "O-5":
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DF2A02"));
+                case "O-6":
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#DA861D"));
+                case "O-7": // ⭐
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC107"));
+                case "O-8": // ⭐⭐
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC107"));
+                case "O-9": // ⭐⭐⭐
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC107"));
+                case "O-10": // ⭐⭐⭐⭐
+                    return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFC107"));
+
                 case "E-8":
                     return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B051D3"));
                 case "E-7":
@@ -202,5 +223,8 @@ namespace USNPersonnelManager
         public DateTime? LastPromotionDate { get; set; }
         public DateTime? LastVoyageDate { get; set; }
         public DateTime? LastVoyageHostedDate { get; set; }
+        public DateTime? LOAEndDate { get; set; }
+        public string GuildMember { get; set; }
     }
+
 }
