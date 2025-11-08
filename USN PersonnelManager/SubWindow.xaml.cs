@@ -137,5 +137,83 @@ namespace USNPersonnelManager
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void ClearVoyagesButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedPersonnel))
+            {
+                MessageBox.Show("Please select a personnel.", "Validation Error",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Confirmation dialog
+            var result = MessageBox.Show($"Are you sure you want to clear the last voyage hosted dates for {selectedPersonnel}?",
+                                         "Confirm Clear",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            // Load personnel list
+            var personnelList = LoadPersonnelData();
+
+            var person = personnelList.Find(p => p.Name == selectedPersonnel);
+            if (person != null)
+            {
+                person.LastVoyageDate = null;
+
+                SavePersonnelData(personnelList);
+
+                MessageBox.Show($"Last voyage and last voyage hosted dates cleared for {selectedPersonnel}.",
+                                "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Personnel not found in the roster.", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ClearVoyagesHostedButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedPersonnel))
+            {
+                MessageBox.Show("Please select a personnel.", "Validation Error",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Confirmation dialog
+            var result = MessageBox.Show($"Are you sure you want to clear the last voyage hosted dates for {selectedPersonnel}?",
+                                         "Confirm Clear",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            // Load personnel list
+            var personnelList = LoadPersonnelData();
+
+            var person = personnelList.Find(p => p.Name == selectedPersonnel);
+            if (person != null)
+            {
+                person.LastVoyageHostedDate = null;
+
+                SavePersonnelData(personnelList);
+
+                MessageBox.Show($"Last voyage and last voyage hosted dates cleared for {selectedPersonnel}.",
+                                "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Personnel not found in the roster.", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }
