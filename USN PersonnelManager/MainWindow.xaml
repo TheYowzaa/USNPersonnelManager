@@ -19,7 +19,7 @@
                            Foreground="White" FontWeight="SemiBold"/>
         </DockPanel>
 
-        <!-- Bottom Buttons -->
+        <!-- Buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,-580,0,0">
             <Button Content="LOAD FROM FILE"
                     Width="125" Height="35" Margin="10,0"

@@ -15,58 +15,27 @@ namespace USNPersonnelManager
         {
             InitializeComponent();
             dataFile = selectedFile;
+
+            // Populate the dropdown dynamically
+            LoadPersonnelDropdown();
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void LoadPersonnelDropdown()
         {
-            string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
-            if (string.IsNullOrEmpty(selectedPersonnel))
-            {
-                MessageBox.Show("Please select a personnel to update.", "Validation Error",
-                                MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            PersonnelDropdown.Items.Clear();
 
             var personnelList = LoadPersonnelData();
-            var existing = personnelList.Find(p => p.Name == selectedPersonnel);
 
-            if (existing == null)
+            foreach (var person in personnelList)
             {
-                MessageBox.Show("Selected personnel does not exist in the roster.", "Error",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                PersonnelDropdown.Items.Add(new ComboBoxItem
+                {
+                    Content = person.Name
+                });
             }
 
-            // Update only fields that have a selection
-            if (RankDropdown.SelectedItem != null)
-                existing.Rank = (RankDropdown.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.Rank;
-
-            if (LOAStatusDropdown.SelectedItem != null)
-                existing.LOAStatus = (LOAStatusDropdown.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.LOAStatus;
-
-            if (JoinDatePicker.SelectedDate.HasValue)
-                existing.ServerJoinDate = JoinDatePicker.SelectedDate.Value;
-
-            if (LastPromotionDatePicker.SelectedDate.HasValue)
-                existing.LastPromotionDate = LastPromotionDatePicker.SelectedDate.Value;
-
-            if (LastVoyageDatePicker.SelectedDate.HasValue)
-                existing.LastVoyageDate = LastVoyageDatePicker.SelectedDate.Value;
-
-            if (LastVoyageHostedDatePicker.SelectedDate.HasValue)
-                existing.LastVoyageHostedDate = LastVoyageHostedDatePicker.SelectedDate.Value;
-
-            SavePersonnelData(personnelList);
-
-            MessageBox.Show($"Updated info saved for {selectedPersonnel}!", "Update Saved",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-
-            this.Close();
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            if (PersonnelDropdown.Items.Count > 0)
+                PersonnelDropdown.SelectedIndex = 0;
         }
 
         private List<PersonnelInfo> LoadPersonnelData()
@@ -100,6 +69,67 @@ namespace USNPersonnelManager
             }
         }
 
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (string.IsNullOrEmpty(selectedPersonnel))
+            {
+                MessageBox.Show("Please select a personnel to update.", "Validation Error",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var personnelList = LoadPersonnelData();
+            var existing = personnelList.Find(p => p.Name == selectedPersonnel);
+
+            if (existing == null)
+            {
+                MessageBox.Show("Selected personnel does not exist in the roster.", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Update all editable fields
+            if (RankDropdown.SelectedItem != null)
+                existing.Rank = (RankDropdown.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.Rank;
+
+            if (LOAStatusDropdown.SelectedItem != null)
+                existing.LOAStatus = (LOAStatusDropdown.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.LOAStatus;
+
+            if (LOAEndDatePicker.SelectedDate.HasValue)
+                existing.LOAEndDate = LOAEndDatePicker.SelectedDate.Value;
+
+            if (JoinDatePicker.SelectedDate.HasValue)
+                existing.ServerJoinDate = JoinDatePicker.SelectedDate.Value;
+
+            if (LastPromotionDatePicker.SelectedDate.HasValue)
+                existing.LastPromotionDate = LastPromotionDatePicker.SelectedDate.Value;
+
+            if (LastVoyageDatePicker.SelectedDate.HasValue)
+                existing.LastVoyageDate = LastVoyageDatePicker.SelectedDate.Value;
+
+            if (LastVoyageHostedDatePicker.SelectedDate.HasValue)
+                existing.LastVoyageHostedDate = LastVoyageHostedDatePicker.SelectedDate.Value;
+
+            if (GuildComboBox.SelectedItem != null)
+                existing.GuildMember = (GuildComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.GuildMember;
+
+            SavePersonnelData(personnelList);
+
+            MessageBox.Show($"Updated info saved for {selectedPersonnel}!", "Update Saved",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Refresh dropdown in case names changed (optional)
+            LoadPersonnelDropdown();
+
+            this.Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void TerminateButton_Click(object sender, RoutedEventArgs e)
         {
             string selectedPersonnel = (PersonnelDropdown.SelectedItem as ComboBoxItem)?.Content.ToString();
@@ -110,26 +140,23 @@ namespace USNPersonnelManager
                 return;
             }
 
-            // Confirmation dialog
             var result = MessageBox.Show($"Are you sure you want to terminate {selectedPersonnel}?",
                                          "Confirm Termination",
                                          MessageBoxButton.YesNo,
                                          MessageBoxImage.Warning);
 
             if (result != MessageBoxResult.Yes)
-                return; // User canceled
+                return;
 
-            // Load personnel list
             var personnelList = LoadPersonnelData();
-
-            // Remove the selected personnel
             var removed = personnelList.RemoveAll(p => p.Name == selectedPersonnel);
             if (removed > 0)
             {
                 SavePersonnelData(personnelList);
                 MessageBox.Show($"{selectedPersonnel} has been terminated.", "Termination Complete",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close(); // Close subwindow
+                LoadPersonnelDropdown(); // Refresh dropdown
+                this.Close();
             }
             else
             {
@@ -148,8 +175,7 @@ namespace USNPersonnelManager
                 return;
             }
 
-            // Confirmation dialog
-            var result = MessageBox.Show($"Are you sure you want to clear the last voyage hosted dates for {selectedPersonnel}?",
+            var result = MessageBox.Show($"Are you sure you want to clear the last voyage date for {selectedPersonnel}?",
                                          "Confirm Clear",
                                          MessageBoxButton.YesNo,
                                          MessageBoxImage.Question);
@@ -157,23 +183,15 @@ namespace USNPersonnelManager
             if (result != MessageBoxResult.Yes)
                 return;
 
-            // Load personnel list
             var personnelList = LoadPersonnelData();
-
             var person = personnelList.Find(p => p.Name == selectedPersonnel);
+
             if (person != null)
             {
                 person.LastVoyageDate = null;
-
                 SavePersonnelData(personnelList);
-
-                MessageBox.Show($"Last voyage and last voyage hosted dates cleared for {selectedPersonnel}.",
+                MessageBox.Show($"Last voyage date cleared for {selectedPersonnel}.",
                                 "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Personnel not found in the roster.", "Error",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -187,8 +205,7 @@ namespace USNPersonnelManager
                 return;
             }
 
-            // Confirmation dialog
-            var result = MessageBox.Show($"Are you sure you want to clear the last voyage hosted dates for {selectedPersonnel}?",
+            var result = MessageBox.Show($"Are you sure you want to clear the last voyage hosted date for {selectedPersonnel}?",
                                          "Confirm Clear",
                                          MessageBoxButton.YesNo,
                                          MessageBoxImage.Question);
@@ -196,23 +213,15 @@ namespace USNPersonnelManager
             if (result != MessageBoxResult.Yes)
                 return;
 
-            // Load personnel list
             var personnelList = LoadPersonnelData();
-
             var person = personnelList.Find(p => p.Name == selectedPersonnel);
+
             if (person != null)
             {
                 person.LastVoyageHostedDate = null;
-
                 SavePersonnelData(personnelList);
-
-                MessageBox.Show($"Last voyage and last voyage hosted dates cleared for {selectedPersonnel}.",
+                MessageBox.Show($"Last voyage hosted date cleared for {selectedPersonnel}.",
                                 "Cleared", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Personnel not found in the roster.", "Error",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
