@@ -85,16 +85,42 @@
                             BorderThickness = new Thickness(1)
                         };
                         var stack = new StackPanel { Margin = new Thickness(15, 5, 0, 5) };
-                        stack.Children.Add(new TextBlock { Text = $"LOA Status: {person.LOAStatus}", Foreground = Brushes.White });
-                        stack.Children.Add(new TextBlock { Text = $"LOA Ends: {(person.LOAEndDate.HasValue ? $"{person.LOAEndDate:dd-MM-yyyy} ({(person.LOAEndDate.Value - DateTime.Now).Days} days left)" : "N/A")}", Foreground = Brushes.White });
+                    if (person.LOAStatus != "OFF LOA")
+                    {
+                        stack.Children.Add(new TextBlock
+                        {
+                            Text = $"LOA Status: {person.LOAStatus}",
+                            Foreground = Brushes.White
+                        });
+
+                        stack.Children.Add(new TextBlock
+                        {
+                            Text = $"LOA Ends: {(person.LOAEndDate.HasValue ? $"{person.LOAEndDate:dd-MM-yyyy} ({(person.LOAEndDate.Value - DateTime.Now).Days} days left)" : "N/A")}",
+                            Foreground = Brushes.White
+                        });
+                    }
                         stack.Children.Add(new TextBlock { Text = $"Joined Server: {FormatDate(person.ServerJoinDate)}", Foreground = Brushes.White });
                         stack.Children.Add(new TextBlock { Text = $"Last Promotion: {FormatDate(person.LastPromotionDate)}", Foreground = Brushes.White });
                         stack.Children.Add(new TextBlock { Text = $"Guild Member: {(!string.IsNullOrEmpty(person.GuildMember) ? person.GuildMember : "No")}", Foreground = Brushes.White });
-                        stack.Children.Add(new TextBlock { Text = $"Last Voyage: {FormatDate(person.LastVoyageDate)}", Foreground = Brushes.White });
-                        stack.Children.Add(new TextBlock { Text = $"Last Voyage Hosted: {FormatDate(person.LastVoyageHostedDate)}", Foreground = Brushes.White });
+                    // --- Last Voyage ---
+                    var voyageText = new TextBlock
+                    {
+                        Text = $"Last Voyage: {FormatDate(person.LastVoyageDate)}",
+                        Foreground = GetVoyageColor(person.LastVoyageDate, 25, 30) // thresholds: orange at 25d, red at 30d
+                    };
+                    stack.Children.Add(voyageText);
+
+                    // --- Last Voyage Hosted ---
+                    var voyageHostedText = new TextBlock
+                    {
+                        Text = $"Last Voyage Hosted: {FormatDate(person.LastVoyageHostedDate)}",
+                        Foreground = GetVoyageColor(person.LastVoyageHostedDate, 10, 14) // thresholds: orange at 10d, red at 14d
+                    };
+                    stack.Children.Add(voyageHostedText);
 
 
-                        stack.Children.Add(new TextBlock
+
+                    stack.Children.Add(new TextBlock
                         {
                             Text = $"SPD Memberships: {(person.SPDMemberships != null && person.SPDMemberships.Count > 0 ? string.Join(", ", person.SPDMemberships) : "None")}",
                             Foreground = Brushes.White
@@ -151,6 +177,21 @@
                         return Brushes.White;
                 }
             }
+
+        private SolidColorBrush GetVoyageColor(DateTime? voyageDate, int orangeThreshold, int redThreshold)
+        {
+            if (voyageDate == null)
+                return Brushes.Gray;
+
+            int daysAgo = (DateTime.Now - voyageDate.Value).Days;
+
+            if (daysAgo <= orangeThreshold)
+                return Brushes.LightGreen; 
+            else if (daysAgo <= redThreshold)
+                return Brushes.Orange;
+            else
+                return Brushes.Red;
+        }
 
         private string FormatDate(DateTime? date)
         {
