@@ -11,7 +11,7 @@
     <Platforms>AnyCPU;x64</Platforms>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject>USN_PersonnelManager.App</StartupObject>
-    <ApplicationIcon>Navy.ico</ApplicationIcon>
+    <ApplicationIcon>USN.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Navy.ico" />
+    <Content Include="USN.ico" />
   </ItemGroup>
 
   <ItemGroup>

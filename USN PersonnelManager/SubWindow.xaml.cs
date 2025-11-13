@@ -114,6 +114,12 @@ namespace USNPersonnelManager
             if (GuildComboBox.SelectedItem != null)
                 existing.GuildMember = (GuildComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() ?? existing.GuildMember;
 
+            existing.SPDMemberships = new List<string>();
+            foreach (ListBoxItem item in SPDMembershipListBox.SelectedItems)
+            {
+                existing.SPDMemberships.Add(item.Content.ToString());
+            }
+
             SavePersonnelData(personnelList);
 
             MessageBox.Show($"Updated info saved for {selectedPersonnel}!", "Update Saved",
